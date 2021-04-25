@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -5,7 +6,7 @@ import store from "./store";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-
+import 'firebase/storage';
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/style.css";
@@ -24,6 +25,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
+const storage = firebase.storage();
 
 let app;
 firebase.auth().onAuthStateChanged(user => {
@@ -35,4 +37,4 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-export { firebase, db };
+export { firebase, db, storage, $ };

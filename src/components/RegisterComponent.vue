@@ -67,7 +67,11 @@ export default {
                 if(response.operationType === "signIn" && response.user) {
                     updateUserProfile(response.user);
                     createUserDoc(response.user).then(() => {
-                        router.push('home');
+                        firebase.auth().signOut().then((response) => {
+                            router.push('/login');
+                        }).catch((err) => {
+                            console.log(err);
+                        });
                     });
                 }
             }).catch(err => {

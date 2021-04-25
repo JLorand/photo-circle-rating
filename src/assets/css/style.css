@@ -9,19 +9,7 @@
 # General
 --------------------------------------------------------------*/
 html {
-  height: 100vh;
-}
 
-body {
-  font-family: "Open Sans", sans-serif;
-  color: #444444;
-  -webkit-user-select: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: none;
-  user-select: none;
-  background: url("../img/hero-bg.jpg") top right no-repeat;
-  background-size: cover;
-  position: relative;
 }
 
 body:before {
@@ -32,7 +20,28 @@ body:before {
     z-index: -1;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.50);
+    background: #58636d55;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #444444;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+  background: url("../img/hero-bg.jpg") top right no-repeat fixed;
+  background-size: cover;
+  position: relative;
+  overflow-y: hidden;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+    display: none;
 }
 
 a {
@@ -52,7 +61,6 @@ h1, h2, h3, h4, h5, h6 {
 # Header
 --------------------------------------------------------------*/
 #header {
-  z-index: 997;
   transition: all 0.5s;
   height: 80px;
   background: rgba(25, 28, 31, 0.8);
@@ -392,10 +400,19 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 .btn-go {
-  background: rgb(0 0 0 / 0%);
   margin: 1.5rem 0 1.5rem 0;
-  color: #d39e00 !important;
-  transition: 0.4s;
+  background-color: #d39e00 !important;
+  color: #333 !important;
+  border-radius: 4px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.btn-cancel {
+  margin: 1.5rem 0 1.5rem 0;
+  background-color: rgba(125,125,125,0.15) !important;
+  color: #333 !important;
   border-radius: 4px;
   font-size: 1.5rem;
   font-weight: 600;
@@ -403,7 +420,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-go:hover {
-  background-color: #d39e00 !important;
+  transition: 0.4s;
+  background: rgb(0 0 0 / 0%) !important;
+  color: #d39e00 !important;
+}
+
+.btn-cancel:hover {
+  transition: 0.4s;
+  background: rgb(0 0 0 / 0%) !important;
+  color: rgba(155,155,155,1) !important;
+}
+
+.btn-go[disabled] {
+  cursor: not-allowed;
+  background: rgb(0 0 0 / 0%) !important;
+  color: #eaecf0 !important;
+}
+
+.btn-go[disabled]:hover {
+  background-color: #eaecf0 !important;
   color: #333 !important;
 }
 
@@ -412,9 +447,9 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 .card {
-  position: relative;
+  /* position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; */
   min-width: 0;
   word-wrap: break-word;
   background-color: #00000033;
@@ -429,7 +464,34 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
 }
 
+#photo-viewer-section .card {
+  background-color: #00000099;
+}
 
-#photo-upload-section {
-  margin-top: 80px;
+/* #photo-viewer-section .card-body:hover {
+  cursor: pointer;
+} */
+
+#photo-viewer-section .card-img-top {
+  z-index: 10;
+  height: 500px;
+  object-fit: cover;
+}
+
+#photo-viewer-section .card-img-top:hover {
+    cursor: zoom-in;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5rem;
+  background: #000000cc;
+  margin-top: -5rem;
+  z-index: 11;
+}
+
+#photo-viewer-section .title-container:hover {
+  cursor: pointer;
 }

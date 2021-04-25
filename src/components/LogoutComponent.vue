@@ -1,10 +1,8 @@
 <template>
-  <div>
-      <a type="button" class="nav-link" @click="Logout">
-        Kijelentkezés
-      </a>
-  </div>
-</template>
+    <a href="#" type="button" class="nav-link" @click="logout">
+      Kijelentkezés
+    </a>
+</template>s
 
 <script>
 import { ref } from "vue";
@@ -13,7 +11,7 @@ import router from '../router/index.js'
 export default {
   name: "LogoutComponent",
   setup() {
-    const Logout = (e) => {
+    const logout = (e) => {
       e.preventDefault();
       firebase.auth().signOut().then((response) => {
           router.push('/');
@@ -23,7 +21,7 @@ export default {
     };
 
     return {
-      Logout,
+      logout,
     };
   },
 };

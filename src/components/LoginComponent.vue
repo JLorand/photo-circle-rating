@@ -43,7 +43,7 @@ export default {
         const Login = (e) => {
             e.preventDefault();
             firebase.auth().signInWithEmailAndPassword(email.value, password.value).then(response => {
-                router.push('home');
+                router.push('/home');
             }).catch(err => {
                 console.log(err);
             });

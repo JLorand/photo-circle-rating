@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import firebase from "firebase/app";
-require('firebase/auth');
+import {firebase, storage, db } from '../main.js';
 
 const routes = [
   {
@@ -30,7 +29,26 @@ const routes = [
     path: "/photo-upload",
     name: "PhotoUpload",
     component: () => import(/* webpackChunkName: "PhotoUpload" */ "../views/PhotoUpload.vue"),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    beforeEnter: (to, from, next) => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if(user) {
+          const userDocRef = db.collection('images').where("userId", "==", user.uid).get()
+          .then((querySnapshot) => {
+              if(querySnapshot.empty) {
+                next();
+                return;
+              } else {
+                next('/home');
+                return;
+              }
+          });
+        } else {
+          next();
+          return;
+        }
+      })
+    }
   }
 ];
 
@@ -47,14 +65,18 @@ router.beforeEach((to, from, next) => {
     if(user){
       if(onlyUnauthorized) {
         next('/home');
+        return;
       } else {
         next();
+        return;
       }
     } else {
       if(requiresAuth) {
         next('/login');
+        return;
       } else {
         next();
+        return;
       }
     }
   });
