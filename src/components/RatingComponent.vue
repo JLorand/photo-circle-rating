@@ -27,6 +27,10 @@
             </button>
           </div>
           <div class="modal-body">
+            <div v-show="userCantRateThisPhoto" class="alert alert-info" role="alert">
+              <i class="fas fa-info-circle"></i>
+              Saját fotóklubbod képeit nem tudod értékelni.
+            </div>
             <form method="POST">
               <div class="form-group row">
                 <label
@@ -226,6 +230,8 @@ export default {
             imageCircleId == that.usersCircleId
               ? (that.userCantRateThisPhoto = true)
               : (that.userCantRateThisPhoto = false);
+            that.score = 5;
+            that.comment = null;
           }
         });
       db.collection("ratings")
@@ -237,7 +243,7 @@ export default {
             const givenRating = ratings.filter(
               (x) => x.userId == that.user.uid
             )?.[0];
-            that.score = givenRating?.score ?? 1;
+            that.score = givenRating?.score ?? 5;
             that.comment = givenRating?.comment ?? null;
           }
         });

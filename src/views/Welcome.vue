@@ -2,8 +2,8 @@
   <section>
     <section id="hero">
       <div class="hero-container">
-        <h1>Fotókör</h1>
-        <h2>A fotó értékelő app</h2>
+        <h1>Blenditák</h1>
+        <h2>Fotóklubok játéka</h2>
         <button @click="$router.push('/home')" class="btn-go">Tovább</button>
       </div>
     </section>

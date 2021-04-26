@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group row">
-            <label for="password" class="col-md-4 col-form-label text-md-right">Fotókör</label>
+            <label for="password" class="col-md-4 col-form-label text-md-right">Fotóklub</label>
             <div class="col-md-6">
                 <select class="form-control" v-model="selectedCircle">
                     <option v-for="(circle, index) in circles" v-bind:key="circle.key" v-bind:value="circle.key" :selected="index == 0 ? true : false">

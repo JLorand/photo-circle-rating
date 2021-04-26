@@ -156,8 +156,8 @@ export default {
 
 <style>
 .previewer {
-    min-width: 100vw;
-    min-height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
     background: rgba(0,0,0,0.95);
     z-index: 9998;
     position: absolute;

@@ -9,7 +9,7 @@
 # General
 --------------------------------------------------------------*/
 html {
-
+  max-width: 2560px;
 }
 
 body:before {
@@ -37,6 +37,8 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
   overflow-y: scroll;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -451,6 +453,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column; */
   min-width: 0;
+  width: 100%;
   word-wrap: break-word;
   background-color: #00000033;
   background-clip: border-box;
@@ -464,13 +467,14 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
 }
 
+#photo-viewer-section {
+  display: flex;
+  justify-content: center;
+}
+
 #photo-viewer-section .card {
   background-color: #00000099;
 }
-
-/* #photo-viewer-section .card-body:hover {
-  cursor: pointer;
-} */
 
 #photo-viewer-section .card-img-top {
   z-index: 10;
@@ -494,4 +498,38 @@ h1, h2, h3, h4, h5, h6 {
 
 #photo-viewer-section .title-container:hover {
   cursor: pointer;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+}
+
+#app .content-wrapper {
+  max-width: 2560px;
+  width: 100%;
+}
+
+.rating-inactive {
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-top: 80px;
+  padding: 1rem;
+}
+
+.rating-inactive-title {
+  padding: 1rem;
+  background: #333333bb;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-style: oblique;
+  margin-top: -80px;
 }
