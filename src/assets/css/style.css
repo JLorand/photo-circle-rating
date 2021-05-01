@@ -533,3 +533,24 @@ h1, h2, h3, h4, h5, h6 {
   font-style: oblique;
   margin-top: -80px;
 }
+
+.form-control:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem #ffc107;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #bbbbbbbb;
+  font-style: oblique;
+  opacity: 1; /* Firefox */
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #bbbbbbbb;
+  font-style: oblique;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+  color: #bbbbbbbb;
+  font-style: oblique;
+}

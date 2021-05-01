@@ -6,6 +6,7 @@
     <div v-else class="rating-inactive">
       <div class="rating-inactive-title">
         <h1>Az értékelés még nem kezdődött el.</h1>
+        <p class="leed">Ha még nem töltöttél fel képet, a "Képfeltöltés" menüpont alatt megteheted...</p>
       </div>
     </div>
 </template>
