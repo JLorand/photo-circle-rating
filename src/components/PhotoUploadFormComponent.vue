@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import {computed, ref} from 'vue';
-import {firebase, storage, db } from '../main.js';
+import { ref } from 'vue';
+import { firebase, storage, db } from '../main.js';
 import router from '../router/index.js'
 export default {
     name: "PhotoUploadFormComponent",

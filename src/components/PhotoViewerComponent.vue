@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import {ref, onBeforeMount, nextTick} from 'vue';
-import {firebase, db } from '../main.js';
+import { ref, onBeforeMount } from 'vue';
+import { firebase, db } from '../main.js';
 import PhotoViewComponent from '../components//PhotoViewComponent.vue';
 import RatingComponent from '../components//RatingComponent.vue';
 export default {

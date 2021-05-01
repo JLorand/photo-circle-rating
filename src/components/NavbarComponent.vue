@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import {onBeforeMount, ref} from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import LogoutComponent from "../components/LogoutComponent.vue";
 import {firebase, db } from '../main.js';
 export default {

@@ -6,7 +6,7 @@
 
 <script>
 import { ref } from "vue";
-import {firebase} from '../main.js';
+import { firebase } from '../main.js';
 import router from '../router/index.js'
 export default {
   name: "LogoutComponent",

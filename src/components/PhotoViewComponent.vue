@@ -13,8 +13,7 @@
 </template>
 
 <script>
-import {ref} from 'vue';
-import {firebase, db } from '../main.js';
+import { ref } from 'vue';
 export default {
     components: {  },
     name: "PhotoViewComponent",
