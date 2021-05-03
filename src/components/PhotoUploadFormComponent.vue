@@ -46,15 +46,16 @@
             </div>
         </div>
 
-        <div class="row" v-show="showGenericError">
-            <div class="col-12 text-center mt-4">
-                <p class="small">A feltöltés meghiúsult! Kérem, keresse fel az oldal üzemeltetőjét!</p>
-            </div>
-        </div>
 
         <div class="row" v-show="resolutionNotAllowedError">
             <div class="col-12 text-center mt-4">
-                <p class="small">A feltöltés meghiúsult! A kép maximális felbontása 1500x1500 pixel lehet!</p>
+                <p class="small">A kép maximális felbontása 1500x1500 pixel lehet!</p>
+            </div>
+        </div>
+
+        <div class="row" v-show="showGenericError">
+            <div class="col-12 text-center mt-4">
+                <p class="small">A feltöltés meghiúsult! Kérem, keresse fel az oldal üzemeltetőjét!</p>
             </div>
         </div>
         
