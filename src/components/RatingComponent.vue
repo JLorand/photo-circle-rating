@@ -39,7 +39,7 @@
                   >Kép címe</label
                 >
                 <div class="col-md-6">
-                  <span class="d-flex align-items-center h-100">{{
+                  <span class="d-flex align-items-center h-100" style="text-transform: capitalize;">{{
                     photoToRate.title
                   }}</span>
                 </div>
@@ -76,7 +76,7 @@
                   <textarea
                     v-model="comment"
                     class="form-control"
-                    maxlength="125"
+                    maxlength="300"
                     :disabled="userCantRateThisPhoto"
                   />
                 </div>

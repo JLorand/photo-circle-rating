@@ -1,57 +1,79 @@
 <template>
-<div>
-    <div class="text-center col-md-8 offset-md-2 mb-md-5" style="font-size: 1rem;">
-        <div v-show="errorMessage && errorMessage.length > 0" class="alert alert-danger" role="alert">
-            <i class="fas fa-info-circle"></i>
-            <span v-html="errorMessage"></span>
+    <h1 v-if="!isRegisterFinished">Regisztráció</h1>
+    <div class="container-fluid pt-5" v-if="!isRegisterFinished">
+        <div class="row" >
+            <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+                <div class="user-form">
+                    <div class="card">
+                        <div class="card-body pt-5 pb-5">
+                            <div class="text-center col-md-8 offset-md-2 mb-md-5" style="font-size: 1rem;">
+                                <div v-show="errorMessage && errorMessage.length > 0" class="alert alert-danger" role="alert">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span v-html="errorMessage"></span>
+                                </div>
+                            </div>
+                            <form method="POST">
+                                <div class="form-group row">
+                                    <label for="email_address" class="col-md-4 col-form-label text-md-right">Név</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" name="name" v-model="username" maxlength="50" autocomplete="name" autofocus placeholder="Add meg a neved...">
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group row">
+                                    <label for="email_address" class="col-md-4 col-form-label text-md-right">Email</label>
+                                    <div class="col-md-6">
+                                    <input type="text" class="form-control" name="email" v-model="email" maxlength="50" autocomplete="email" placeholder="Add meg az email címed..."/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">Jelszó</label>
+                                    <div class="col-md-6">
+                                    <input type="password" class="form-control" name="password" v-model="password" maxlength="50" autocomplete="new-password" placeholder="Add meg a jelszavad..." />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">Fotóklub</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" v-model="selectedCircle">
+                                            <option v-for="(circle, index) in circles" v-bind:key="circle.key" v-bind:value="circle.key" :selected="index == 0 ? true : false">
+                                                {{ circle.value }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <button type="button" class="btn-go" @click="Register">Regisztráció</button>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <span class="user-form-redirect">Korábban már regisztráltál? <router-link to="/login">Bejelentkezés</router-link></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <form method="POST">
-        <div class="form-group row">
-            <label for="email_address" class="col-md-4 col-form-label text-md-right">Név</label>
-            <div class="col-md-6">
-                <input type="text" class="form-control" name="name" v-model="username" maxlength="50" autocomplete="name" autofocus placeholder="Add meg a neved...">
+    <div v-else class="rating-inactive" style="margin-top:0;">
+        <div class="rating-inactive-title">
+            <h1 style="font-size: 2.5rem; font-family: Open Sans, sans-serif">A regisztráció már véget ért.</h1>
+            <p class="leed">Ha még nem regisztráltál volna, vedd fel a kapcsolatot az adminisztrátorral...</p>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <span class="user-form-redirect">Korábban már regisztráltál? <router-link to="/login">Bejelentkezés</router-link></span>
+                </div>
             </div>
         </div>
-            
-        <div class="form-group row">
-            <label for="email_address" class="col-md-4 col-form-label text-md-right">Email</label>
-            <div class="col-md-6">
-            <input type="text" class="form-control" name="email" v-model="email" maxlength="50" autocomplete="email" placeholder="Add meg az email címed..."/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="password" class="col-md-4 col-form-label text-md-right">Jelszó</label>
-            <div class="col-md-6">
-            <input type="password" class="form-control" name="password" v-model="password" maxlength="50" autocomplete="new-password" placeholder="Add meg a jelszavad..." />
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="password" class="col-md-4 col-form-label text-md-right">Fotóklub</label>
-            <div class="col-md-6">
-                <select class="form-control" v-model="selectedCircle">
-                    <option v-for="(circle, index) in circles" v-bind:key="circle.key" v-bind:value="circle.key" :selected="index == 0 ? true : false">
-                        {{ circle.value }}
-                    </option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 text-center">
-                <button type="button" class="btn-go" @click="Register">Regisztráció</button>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 text-center">
-                <span class="user-form-redirect">Korábban már regisztráltál? <router-link to="/login">Bejelentkezés</router-link></span>
-            </div>
-        </div>
-    </form>
-</div>
+    </div>
 </template>
 
 <script>
@@ -67,6 +89,7 @@ export default {
         const circles = ref([]);
         const selectedCircle = ref('');
         const errorMessage = ref('');
+        const isRegisterFinished = ref(false);
 
         const Register = (e) => {
             e.preventDefault();
@@ -135,8 +158,19 @@ export default {
             }
         }
 
+        const getUploadEndDate = () => {
+        db.collection('rules').get().then((doc) => {
+            if (doc.size > 0) {
+                let ratingStartDate = doc.docs[0].data().ratingStartDate;
+                let registerFinishDate = new Date(new Date(ratingStartDate).setDate(new Date(ratingStartDate).getDate()-1)).toISOString();
+                isRegisterFinished.value = registerFinishDate < new Date().toISOString();
+            }
+        });
+        };
+
         onBeforeMount(() => {
             getPhotoCircles();
+            getUploadEndDate();
         })
 
         return {
@@ -147,7 +181,8 @@ export default {
             selectedCircle,
             Register,
             errorMessage,
-            handleAuthError
+            handleAuthError,
+            isRegisterFinished
         }
     }
 }

@@ -25,7 +25,8 @@ export default {
     const getRatingStartDate = () => {
       db.collection('rules').get().then((doc) => {
           if (doc.size > 0) {
-              isRatingStarted.value = doc.docs[0].data().ratingStartDate < new Date().toISOString();
+            let ratingStartDate = new Date(doc.docs[0].data().ratingStartDate).toISOString();
+            isRatingStarted.value = ratingStartDate < new Date().toISOString();
           }
       });
     };

@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <navbar-component />
-      <section id="photo-upload-section">
+      <div id="photo-upload-section" v-if="!isUploadFinished" >
         <div class="row">
           <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
             <div class="user-form">
@@ -35,14 +35,20 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
+      <div v-else class="rating-inactive">
+        <div class="rating-inactive-title">
+          <h1>A képfeltöltés már véget ért.</h1>
+          <p class="leed">Ha még nem töltöttél fel képet, vedd fel a kapcsolatot az adminisztrátorral...</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import { firebase } from "../main.js";
+import { onBeforeMount, ref } from "vue";
+import { db, firebase } from "../main.js";
 import router from "../router/index.js";
 import NavbarComponent from "../components/NavbarComponent.vue";
 import PhotoUploadFormComponent from "../components/PhotoUploadFormComponent.vue";
@@ -52,6 +58,7 @@ export default {
   setup() {
     const email = ref("");
     const password = ref("");
+    const isUploadFinished = ref(false);
 
     const Login = (e) => {
       e.preventDefault();
@@ -66,10 +73,25 @@ export default {
         });
     };
 
+    const getUploadEndDate = () => {
+      db.collection('rules').get().then((doc) => {
+          if (doc.size > 0) {
+            let ratingStartDate = doc.docs[0].data().ratingStartDate;
+            let uploadFinishDate = new Date(new Date(ratingStartDate).setDate(new Date(ratingStartDate).getDate()-1)).toISOString();
+            isUploadFinished.value = uploadFinishDate < new Date().toISOString();
+          }
+      });
+    };
+
+    onBeforeMount(() => {
+      getUploadEndDate();
+    });
+
     return {
       email,
       password,
       Login,
+      isUploadFinished
     };
   },
 };
