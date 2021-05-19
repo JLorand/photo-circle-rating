@@ -47,19 +47,56 @@ export default {
             });
         };
 
+        const fillGridFrame = (grid) => {
+            // Fill the first column with image ids
+            for (let row = 1; row < grid.length; row++) {
+                grid[row][0] = allImages.value[row-1].id;
+            }
+
+            // Fill the first row with user ids
+            for (let col = 1; col < grid[0].length; col++) {
+                grid[0][col] = allUsers.value[col-1].id;
+            }
+        }
+
+        const replaceIdsWithNamesAndTitles = (grid) => {
+            // Replace iamge ids with names
+            for (let row = 1; row < grid.length; row++) {
+                const uploaderId = allImages.value[row-1].userId;
+                const uploaderName = allUsers.value.filter(x => x.id == uploaderId).map(x => x.name).toString();
+                grid[row][0] = `${allImages.value[row-1].title} (${uploaderName})`;
+            }
+
+            // Replace user ids with names
+            for (let col = 1; col < grid[0].length; col++) {
+                grid[0][col] = allUsers.value[col-1].name;
+            }
+        }
+
+        const createCsvStructure = (grid) => {
+            // Create CSV structure
+            let content = "";
+            for (let row = 0; row < grid.length; row++) {
+                for(let col = 0; col < grid[row].length; col++) {
+                    const current = grid[row][col];
+                    if(current && current != '\t' && current.toString().trim().length > 0)
+                    {
+                        content += grid[row][col].toString().replace('\n', ' ').replace('\t', ' ') + '\t';
+                    } else {
+                        content += '\t';
+                        continue;
+                    }
+                }
+                content += '\n';                
+            }
+            return content;
+        }
+
         const getRatings = () => {
             // Create empty two dimensional array for the result
             let resultsGrid = Array.from(Array(allImages.value.length+1), () => new Array(allUsers.value.length+1));
             
-            // Fill the first column with image ids
-            for (let row = 1; row < resultsGrid.length; row++) {
-                resultsGrid[row][0] = allImages.value[row-1].id;
-            }
-
-            // Fill the first row with user ids
-            for (let col = 1; col < resultsGrid[0].length; col++) {
-                resultsGrid[0][col] = allUsers.value[col-1].id;
-            }
+            fillGridFrame(resultsGrid);
 
             // Fill the resultsGrid (2D matrix) with rating scores
             for (let rating = 0; rating < allRatings.value.length; rating++) {
@@ -72,33 +109,11 @@ export default {
                 }
             }
             
-            // Replace iamge ids with names
-            for (let row = 1; row < resultsGrid.length; row++) {
-                const uploaderId = allImages.value[row-1].userId;
-                const uploaderName = allUsers.value.filter(x => x.id == uploaderId).map(x => x.name).toString();
-                resultsGrid[row][0] = `${allImages.value[row-1].title} (${uploaderName})`;
-            }
+            replaceIdsWithNamesAndTitles(resultsGrid);
 
-            // Replace user ids with names
-            for (let col = 1; col < resultsGrid[0].length; col++) {
-                resultsGrid[0][col] = allUsers.value[col-1].name;
-            }
-
-            // Create CSV structure
-            let content = "";
-            for (let row = 0; row < resultsGrid.length; row++) {
-                for(let col = 0; col < resultsGrid[row].length; col++) {
-                    const current = resultsGrid[row][col];
-                    if(current == undefined || current == null)
-                    {
-                        content += '\t';
-                        continue;
-                    }
-                    content += resultsGrid[row][col] + '\t';
-                }
-                content += '\n';                
-            }
+            const content = createCsvStructure(resultsGrid);
             
+            // Persist CSV
             var storageRef = firebase.storage().ref();
             storageRef.child('ratings').putString(content);
         };
@@ -107,15 +122,7 @@ export default {
             // Create empty two dimensional array for the result
             let commentsGrid = Array.from(Array(allImages.value.length+1), () => new Array(allUsers.value.length+1));
             
-            // Fill the first column with image ids
-            for (let row = 1; row < commentsGrid.length; row++) {
-                commentsGrid[row][0] = allImages.value[row-1].id;
-            }
-
-            // Fill the first row with user ids
-            for (let col = 1; col < commentsGrid[0].length; col++) {
-                commentsGrid[0][col] = allUsers.value[col-1].id;
-            }
+            fillGridFrame(commentsGrid);
 
             // Fill the commentsGrid (2D matrix) with rating comments
             for (let rating = 0; rating < allRatings.value.length; rating++) {
@@ -128,34 +135,11 @@ export default {
                 }
             }
             
-            // Replace iamge ids with names
-            for (let row = 1; row < commentsGrid.length; row++) {
-                const uploaderId = allImages.value[row-1].userId;
-                const uploaderName = allUsers.value.filter(x => x.id == uploaderId).map(x => x.name).toString();
-                commentsGrid[row][0] = `${allImages.value[row-1].title} (${uploaderName})`;
-            }
+            replaceIdsWithNamesAndTitles(commentsGrid);
 
-            // Replace user ids with names
-            for (let col = 1; col < commentsGrid[0].length; col++) {
-                commentsGrid[0][col] = allUsers.value[col-1].name;
-            }
-
-            // Create CSV structure
-            let content = "";
-            for (let row = 0; row < commentsGrid.length; row++) {
-                for(let col = 0; col < commentsGrid[row].length; col++) {
-                    const current = commentsGrid[row][col];
-                    if(current && current != '\t' && current.trim().length > 0)
-                    {
-                        content += commentsGrid[row][col].replace('\n', ' ') + '\t';
-                    } else {
-                        content += '\t';
-                        continue;
-                    }
-                }
-                content += '\n';                
-            }
+            const content = createCsvStructure(commentsGrid);
             
+            // Persist CSV
             var storageRef = firebase.storage().ref();
             storageRef.child('comments').putString(content);
         };
