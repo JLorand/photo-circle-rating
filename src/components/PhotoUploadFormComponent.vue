@@ -17,7 +17,7 @@
         <div class="form-group row">
             <label for="email_address" class="col-md-4 col-form-label text-md-right align-middle">A kép leírása</label>
             <div class="col-md-6">
-                <textarea class="form-control" maxlength="125" v-model="description" />
+                <textarea class="form-control" maxlength="300" v-model="description" />
             </div>
         </div>
 
