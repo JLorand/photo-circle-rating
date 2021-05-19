@@ -19,7 +19,7 @@ export default {
                 let images = [];
                 snap.forEach(doc => {
                     const docData = doc.data();
-                    images.push({ id: doc.id, title: docData.title, userId: docData.user });
+                    images.push({ id: doc.id, title: docData.title, userId: docData.userId });
                 });
                 allImages.value = images;
                 callback();
@@ -47,65 +47,125 @@ export default {
             });
         };
 
-        const getResult = () => {
+        const getRatings = () => {
             // Create empty two dimensional array for the result
-            let results = Array.from(Array(allImages.value.length+1), () => new Array(allUsers.value.length+1));
+            let resultsGrid = Array.from(Array(allImages.value.length+1), () => new Array(allUsers.value.length+1));
             
             // Fill the first column with image ids
-            for (let row = 1; row < results.length; row++) {
-                results[row][0] = allImages.value[row-1].id;
+            for (let row = 1; row < resultsGrid.length; row++) {
+                resultsGrid[row][0] = allImages.value[row-1].id;
             }
 
             // Fill the first row with user ids
-            for (let col = 1; col < results[0].length; col++) {
-                results[0][col] = allUsers.value[col-1].id;
+            for (let col = 1; col < resultsGrid[0].length; col++) {
+                resultsGrid[0][col] = allUsers.value[col-1].id;
             }
 
-            // Fill the results (2D matrix) with rating scores
+            // Fill the resultsGrid (2D matrix) with rating scores
             for (let rating = 0; rating < allRatings.value.length; rating++) {
                 let imageRatings = allRatings.value[rating].rating.ratings.map(r =>  { return {userId: r.userId, score: r.score }});
                 for (let imageRating = 0; imageRating < imageRatings.length; imageRating++) {
                     const actualImageRating = imageRatings[imageRating];
-                    let row = results.findIndex((result) => result.includes(allImages.value[rating].id));
-                    let col = results[0].indexOf(actualImageRating.userId);
-                    results[row][col] = actualImageRating.score;
+                    let row = resultsGrid.findIndex((result) => result.includes(allImages.value[rating].id));
+                    let col = resultsGrid[0].indexOf(actualImageRating.userId);
+                    resultsGrid[row][col] = actualImageRating.score;
                 }
             }
             
             // Replace iamge ids with names
-            for (let row = 1; row < results.length; row++) {
-                results[row][0] = allImages.value[row-1].title;
+            for (let row = 1; row < resultsGrid.length; row++) {
+                const uploaderId = allImages.value[row-1].userId;
+                const uploaderName = allUsers.value.filter(x => x.id == uploaderId).map(x => x.name).toString();
+                resultsGrid[row][0] = `${allImages.value[row-1].title} (${uploaderName})`;
             }
 
             // Replace user ids with names
-            for (let col = 1; col < results[0].length; col++) {
-                results[0][col] = allUsers.value[col-1].name;
+            for (let col = 1; col < resultsGrid[0].length; col++) {
+                resultsGrid[0][col] = allUsers.value[col-1].name;
             }
 
             // Create CSV structure
             let content = "";
-            for (let row = 0; row < results.length; row++) {
-                for(let col = 0; col < results[row].length; col++) {
-                    const current = results[row][col];
-                    if(current == undefined)
+            for (let row = 0; row < resultsGrid.length; row++) {
+                for(let col = 0; col < resultsGrid[row].length; col++) {
+                    const current = resultsGrid[row][col];
+                    if(current == undefined || current == null)
                     {
-                        content += ';';
+                        content += '\t';
                         continue;
                     }
-                    content += results[row][col] + ';';
+                    content += resultsGrid[row][col] + '\t';
                 }
                 content += '\n';                
             }
             
             var storageRef = firebase.storage().ref();
-            storageRef.child('results').putString(content);
+            storageRef.child('ratings').putString(content);
+        };
+
+        const getComments = () => {
+            // Create empty two dimensional array for the result
+            let commentsGrid = Array.from(Array(allImages.value.length+1), () => new Array(allUsers.value.length+1));
+            
+            // Fill the first column with image ids
+            for (let row = 1; row < commentsGrid.length; row++) {
+                commentsGrid[row][0] = allImages.value[row-1].id;
+            }
+
+            // Fill the first row with user ids
+            for (let col = 1; col < commentsGrid[0].length; col++) {
+                commentsGrid[0][col] = allUsers.value[col-1].id;
+            }
+
+            // Fill the commentsGrid (2D matrix) with rating comments
+            for (let rating = 0; rating < allRatings.value.length; rating++) {
+                let imageRatings = allRatings.value[rating].rating.ratings.map(r =>  { return {userId: r.userId, comment: r.comment }});
+                for (let imageRating = 0; imageRating < imageRatings.length; imageRating++) {
+                    const actualImageRating = imageRatings[imageRating];
+                    let row = commentsGrid.findIndex((result) => result.includes(allImages.value[rating].id));
+                    let col = commentsGrid[0].indexOf(actualImageRating.userId);
+                    commentsGrid[row][col] = actualImageRating.comment;
+                }
+            }
+            
+            // Replace iamge ids with names
+            for (let row = 1; row < commentsGrid.length; row++) {
+                const uploaderId = allImages.value[row-1].userId;
+                const uploaderName = allUsers.value.filter(x => x.id == uploaderId).map(x => x.name).toString();
+                commentsGrid[row][0] = `${allImages.value[row-1].title} (${uploaderName})`;
+            }
+
+            // Replace user ids with names
+            for (let col = 1; col < commentsGrid[0].length; col++) {
+                commentsGrid[0][col] = allUsers.value[col-1].name;
+            }
+
+            // Create CSV structure
+            let content = "";
+            for (let row = 0; row < commentsGrid.length; row++) {
+                for(let col = 0; col < commentsGrid[row].length; col++) {
+                    const current = commentsGrid[row][col];
+                    if(current && current != '\t' && current.trim().length > 0)
+                    {
+                        content += commentsGrid[row][col].replace('\n', ' ') + '\t';
+                    } else {
+                        content += '\t';
+                        continue;
+                    }
+                }
+                content += '\n';                
+            }
+            
+            var storageRef = firebase.storage().ref();
+            storageRef.child('comments').putString(content);
         };
 
         onBeforeMount(async () => {
             await getAllImages(getAllUsers);
             await getAllUsers();
             await getAllRatings();
-            getResult();
+            getRatings();
+            getComments()
         });
 
         return {
