@@ -133,7 +133,7 @@ export default {
             if (!selectedFile?.value) return;
 
             const storageRef = storage.ref();
-            var uploadTask = storageRef.child('images/'+uid).put(selectedFile.value);
+            var uploadTask = storageRef.child('images/'+uid).put(selectedFile.value, {contentType: 'image/jpeg', cacheControl: 'max-age=1296000'});
             uploadTask.on('state_changed', 
             (snapshot) => {
                 uploadSucceeded.value = null;
